@@ -29,10 +29,38 @@
 
         const url = "https://opalescentmirage.github.io/esrigeojson/MegaCities.geojson";
 
-        const geojsonLayer = new GeoJSONLayer({
+        console.log(url);
+
+      const renderer = {
+        type: "simple",
+        symbol: {
+          type: "simple-marker",
+          color: "orange",
+          outline: {
+            color: "white"
+          }
+        },
+        visualVariables: [{
+          type: "size",
+          stops: [{
+              value: 2.5,
+              size: "4px"
+            },
+            {
+              value: 8,
+              size: "40px"
+            }
+          ]
+        }]
+      };
+
+      const geojsonLayer = new GeoJSONLayer({
         url: url,
+        renderer: renderer,
         copyright: "Jackie",
       });
+
+      console.log(geojsonLayer);
 
         const view = new MapView({
           map: map,
