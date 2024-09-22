@@ -27,8 +27,10 @@
           basemap: "arcgis/topographic" // basemap styles service
         });
 
+        const url = "https://opalescentmirage.github.io/esrigeojson/MegaCities.geojson";
+
         const geojsonLayer = new GeoJSONLayer({
-        url: MegaCities.geojson,
+        url: url,
         copyright: "Jackie",
       });
 
