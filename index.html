@@ -1,80 +1,69 @@
-<html></html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Mega Cities of the World!</title>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Mega Cities of the World!</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.30/"></script>
+  <script>
+    require(["esri/config", "esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer", "esri/renderers/SimpleRenderer", "esri/symbols/SimpleMarkerSymbol"], function(esriConfig, Map, MapView, GeoJSONLayer, SimpleRenderer, SimpleMarkerSymbol) {
 
-    <style>
-      html,
-      body,
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
+      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurEBCF4Df63a-YurcgYiKsA3_aaankt-zLipJCxBHu3jt57rQ1FS2JDQuh3CGiwgaZj8FIkhl9A0eRc9TJKPbytTo8Cro71hoA_RRKWGh0ntr3WxiT9E4c1NY-W6lRXMbdbd_GsLUppT-tkwUYbqY_GKZ58p7HOREAbhz_XK2GCBrAtL5tV3KPGMWEUkOuXCJWJPZm4Zw-bJTe18fVDS-F9A.AT1_zsZm3fLS";
 
-<link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
-<script src="https://js.arcgis.com/4.30/"></script>
+      const map = new Map({
+        basemap: "arcgis/topographic" // basemap styles service
+      });
 
-<script>
-    require(["esri/config", "esri/Map", "esri/views/MapView", "esri/layers/GeoJSONLayer"], function(esriConfig, Map, MapView, GeoJSONLayer) {
+      const url = "https://opalescentmirage.github.io/esrigeojson/MegaCities.geojson";
 
-        esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurEBCF4Df63a-YurcgYiKsA3_aaankt-zLipJCxBHu3jt57rQ1FS2JDQuh3CGiwgaZj8FIkhl9A0eRc9TJKPbytTo8Cro71hoA_RRKWGh0ntr3WxiT9E4c1NY-W6lRXMbdbd_GsLUppT-tkwUYbqY_GKZ58p7HOREAbhz_XK2GCBrAtL5tV3KPGMWEUkOuXCJWJPZm4Zw-bJTe18fVDS-F9A.AT1_zsZm3fLS";
+      const symbol = new SimpleMarkerSymbol({
+        style: "circle",
+        color: "blue",
+        size: "8px", // Adjust the size as needed
+        outline: {
+          color: "white",
+          width: 1
+        }
+      });
 
-        const map = new Map({
-          basemap: "arcgis/topographic" // basemap styles service
-        });
-
-        const url = "https://opalescentmirage.github.io/esrigeojson/MegaCities.geojson";
-
-        console.log(url);
-
-      const renderer = {
-        type: "simple",
-        symbol: {
-          type: "simple-marker",
-          color: "orange",
-          outline: {
-            color: "white"
-          }
-        },
-        visualVariables: [{
-          type: "size",
-          stops: [{
-              value: 2.5,
-              size: "4px"
-            },
-            {
-              value: 8,
-              size: "40px"
-            }
-          ]
-        }]
-      };
+      const renderer = new SimpleRenderer({
+        symbol: symbol
+      });
 
       const geojsonLayer = new GeoJSONLayer({
         url: url,
         renderer: renderer,
-        copyright: "Jackie",
+        copyright: "Jackie"
       });
 
-      console.log(geojsonLayer);
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [0, 0], // Adjust the center to your data's location
+        zoom: 2 // Adjust the zoom level to your data's extent
+      });
 
-        const view = new MapView({
-          map: map,
-          center: [-118.805, 34.027], // Longitude, latitude
-          zoom: 13, // Zoom level
-          container: "viewDiv", // Div element
-          layers: [geojsonLayer]
-        });
+      map.add(geojsonLayer);
 
+      // Log the layer to ensure it's loaded
+      geojsonLayer.when(() => {
+        console.log("GeoJSON Layer loaded:", geojsonLayer);
+      }).catch((error) => {
+        console.error("Error loading GeoJSON Layer:", error);
+      });
     });
   </script>
-
-  </head>
-  <body>
-    <div id="viewDiv"></div>
-  </body>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
 </html>
